@@ -1,0 +1,247 @@
+{
+  "info": {
+    "name": "Google Natural Language",
+    "description": "Text moderation (sentiment, syntax, moderation) via the Google Cloud Natural Language API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5001",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Status",
+      "item": [
+        {
+          "name": "Welcome",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "Returns API name and running status."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Welcome to the Google Natural Language API\",\n  \"status\": \"running\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Lightweight liveness probe."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"healthy\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Moderate",
+      "item": [
+        {
+          "name": "Moderate Text – Good",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"text\": \"I recently visited the Grand Azure Hotel in Paris on October 12th, and the experience was absolutely magnificent. The general manager, Sarah Jenkins, personally upgraded our suite upon arrival. The dinner at their main restaurant, Le Petit Bistro, was exquisitely prepared and worth every penny of the €150 bill. I highly recommend this incredible resort to anyone traveling to France! It was truly the best vacation of my life.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/moderate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "moderate"
+              ]
+            },
+            "description": "Send a text and receive the combined moderation log.\n\n**Body (raw JSON)**\n- `text` (string, required) — the text to evaluate.\n\n**Response fields (`moderation_log`)**\n- `sentiment_score` / `sentiment_magnitude` — document sentiment from the API\n- `sentiment_status` — `positive-sentiment` / `neutral-sentiment` / `negative-sentiment`\n- `syntax_level` — `low` / `medium` / `high`\n- `syntax_status` — human-readable syntax assessment\n- `moderate_text_status` — `low` / `medium` / `high`\n- `moderate_text_score` — number of concerning categories (confidence > 0.05)\n- `moderate_text_categories` — names of concerning categories\n\n**This example:** a glowing hotel review → strongly positive sentiment, no concerning moderation categories."
+          },
+          "response": [
+            {
+              "name": "200 – good (positive / low)",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"text\": \"I recently visited the Grand Azure Hotel in Paris on October 12th, and the experience was absolutely magnificent. The general manager, Sarah Jenkins, personally upgraded our suite upon arrival. The dinner at their main restaurant, Le Petit Bistro, was exquisitely prepared and worth every penny of the €150 bill. I highly recommend this incredible resort to anyone traveling to France! It was truly the best vacation of my life.\",\n  \"moderation_log\": {\n    \"sentiment_score\": 0.9,\n    \"sentiment_magnitude\": 4.5,\n    \"sentiment_status\": \"positive-sentiment\",\n    \"syntax_level\": \"low\",\n    \"syntax_status\": \"Text may lack enough adjectives, making the description vague\",\n    \"moderate_text_status\": \"low\",\n    \"moderate_text_score\": 0,\n    \"moderate_text_categories\": []\n  }\n}"
+            },
+            {
+              "name": "400 – missing text",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Request body must be JSON with a 'text' field.\"\n}"
+            },
+            {
+              "name": "500 – Natural Language request failed",
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Natural Language request failed: 403 Permission denied.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Moderate Text – Medium",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"text\": \"The new QuantumTech Phone 15, released last Tuesday in New York, has both notable strengths and frustrating weaknesses. On one hand, the battery life is a massive improvement over last year's model, easily lasting 48 hours. However, the screen is somewhat dim in bright sunlight, and the $1,200 price tag is quite steep for what you get. Overall, it is an average device that might appeal to brand loyalists, but others should probably look at alternatives\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/moderate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "moderate"
+              ]
+            },
+            "description": "Send a text and receive the combined moderation log.\n\n**Body (raw JSON)**\n- `text` (string, required) — the text to evaluate.\n\n**Response fields (`moderation_log`)**\n- `sentiment_score` / `sentiment_magnitude` — document sentiment from the API\n- `sentiment_status` — `positive-sentiment` / `neutral-sentiment` / `negative-sentiment`\n- `syntax_level` — `low` / `medium` / `high`\n- `syntax_status` — human-readable syntax assessment\n- `moderate_text_status` — `low` / `medium` / `high`\n- `moderate_text_score` — number of concerning categories (confidence > 0.05)\n- `moderate_text_categories` — names of concerning categories\n\n**This example:** a mixed product review (pros and cons) → borderline / weakly positive sentiment, low moderation."
+          },
+          "response": [
+            {
+              "name": "200 – medium (mixed / borderline)",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"text\": \"The new QuantumTech Phone 15, released last Tuesday in New York, has both notable strengths and frustrating weaknesses. On one hand, the battery life is a massive improvement over last year's model, easily lasting 48 hours. However, the screen is somewhat dim in bright sunlight, and the $1,200 price tag is quite steep for what you get. Overall, it is an average device that might appeal to brand loyalists, but others should probably look at alternatives\",\n  \"moderation_log\": {\n    \"sentiment_score\": 0.1,\n    \"sentiment_magnitude\": 2.3,\n    \"sentiment_status\": \"positive-sentiment\",\n    \"syntax_level\": \"low\",\n    \"syntax_status\": \"Text may lack enough adjectives, making the description vague\",\n    \"moderate_text_status\": \"low\",\n    \"moderate_text_score\": 0,\n    \"moderate_text_categories\": []\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Moderate Text – Bad",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"text\": \"My experience with Horizon Airlines on Flight 405 to London was an absolute disaster. We were delayed for six grueling hours at JFK Airport without a single apology or explanation from the incredibly rude staff. When we finally boarded the Boeing 737, the seats were filthy and smelled terrible. To make matters worse, they completely destroyed my luggage. I will never fly with this horrible, incompetent company ever again\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/moderate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "moderate"
+              ]
+            },
+            "description": "Send a text and receive the combined moderation log.\n\n**Body (raw JSON)**\n- `text` (string, required) — the text to evaluate.\n\n**Response fields (`moderation_log`)**\n- `sentiment_score` / `sentiment_magnitude` — document sentiment from the API\n- `sentiment_status` — `positive-sentiment` / `neutral-sentiment` / `negative-sentiment`\n- `syntax_level` — `low` / `medium` / `high`\n- `syntax_status` — human-readable syntax assessment\n- `moderate_text_status` — `low` / `medium` / `high`\n- `moderate_text_score` — number of concerning categories (confidence > 0.05)\n- `moderate_text_categories` — names of concerning categories\n\n**This example:** an angry complaint → negative sentiment and many concerning moderation categories (status `high`)."
+          },
+          "response": [
+            {
+              "name": "200 – bad (negative / high)",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"text\": \"My experience with Horizon Airlines on Flight 405 to London was an absolute disaster. We were delayed for six grueling hours at JFK Airport without a single apology or explanation from the incredibly rude staff. When we finally boarded the Boeing 737, the seats were filthy and smelled terrible. To make matters worse, they completely destroyed my luggage. I will never fly with this horrible, incompetent company ever again\",\n  \"moderation_log\": {\n    \"sentiment_score\": -0.6,\n    \"sentiment_magnitude\": 3.4,\n    \"sentiment_status\": \"negative-sentiment\",\n    \"syntax_level\": \"low\",\n    \"syntax_status\": \"Text may lack enough adjectives, making the description vague\",\n    \"moderate_text_status\": \"high\",\n    \"moderate_text_score\": 11,\n    \"moderate_text_categories\": [\n      \"toxic\",\n      \"insult\",\n      \"death, harm & tragedy\",\n      \"violent\",\n      \"public safety\",\n      \"health\",\n      \"religion & belief\",\n      \"war & conflict\",\n      \"politics\",\n      \"finance\",\n      \"legal\"\n    ]\n  }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
