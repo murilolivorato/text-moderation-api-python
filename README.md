@@ -9,6 +9,9 @@
 [![Sentiment Analysis](https://img.shields.io/badge/Sentiment-Analysis-yellow?style=flat-square)](https://en.wikipedia.org/wiki/Sentiment_analysis)
 [![License MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
+
+![Text Moderation Flow](https://miro.medium.com/v2/resize:fit:700/1*kDXvNH_FvMyfC1FFmoiADg.png)
+
 **Read the full article on Medium:**
 
 ✍️ [https://medium.com/@murilolivorato/building-a-text-moderation-api-with-google-cloud-natural-language-flask-docker-4513bdd800b7?postPublishedType=repub](https://medium.com/@murilolivorato/building-a-text-moderation-api-with-google-cloud-natural-language-flask-docker-4513bdd800b7?postPublishedType=repub)
@@ -19,7 +22,6 @@ combined result, and returns it.
 
 ## Flow
 
-![Text Moderation Flow](https://miro.medium.com/v2/resize:fit:700/1*kDXvNH_FvMyfC1FFmoiADg.png)
 
 `POST /moderate` with `{ "text": "..." }` runs, in order:
 
