@@ -10,7 +10,9 @@
 [![License MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
 
-![Text Moderation Flow](https://miro.medium.com/v2/resize:fit:700/1*kDXvNH_FvMyfC1FFmoiADg.png)
+<div align="center">
+  <img src="https://miro.medium.com/v2/resize:fit:700/1*kDXvNH_FvMyfC1FFmoiADg.png" alt="Text Moderation Flow" width="700">
+</div>
 
 **Read the full article on Medium:**
 
@@ -44,7 +46,9 @@ file at `./logs/analyze.log`.
 
 ### Good — `positive-sentiment (0.9)` / `low` moderation
 
-![Good example](https://cdn-images-1.medium.com/max/800/1*MmX6fqTEmTYJbvxruJ88qg.png)
+<div align="center">
+  <img src="https://cdn-images-1.medium.com/max/800/1*MmX6fqTEmTYJbvxruJ88qg.png" alt="Good example" width="700">
+</div>
 
 Glowing hotel review: sentiment **0.9**, **zero** concerning categories → publish freely.
 
@@ -63,7 +67,9 @@ Glowing hotel review: sentiment **0.9**, **zero** concerning categories → publ
 
 ### Medium — `positive-sentiment (0.1)` / `low` moderation
 
-![Medium example](https://cdn-images-1.medium.com/max/800/1*VqTgwF9MsTEP6vC5Vd896A.png)
+<div align="center">
+  <img src="https://cdn-images-1.medium.com/max/800/1*VqTgwF9MsTEP6vC5Vd896A.png" alt="Medium example" width="700">
+</div>
 
 Mixed phone review: sentiment **0.1** (borderline neutral), safe moderation → publish, but flag as balanced opinion.
 
@@ -82,7 +88,9 @@ Mixed phone review: sentiment **0.1** (borderline neutral), safe moderation → 
 
 ### Bad — `negative-sentiment (-0.6)` / `high` moderation
 
-![Bad example](https://cdn-images-1.medium.com/max/800/1*Y8nYP-DVNI3ZtMrZRXCSkg.png)
+<div align="center">
+  <img src="https://cdn-images-1.medium.com/max/800/1*Y8nYP-DVNI3ZtMrZRXCSkg.png" alt="Bad example" width="700">
+</div>
 
 Angry airline complaint: sentiment **-0.6**, **11** concerning categories → flag for review or auto-reject.
 
