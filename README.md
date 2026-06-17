@@ -1,10 +1,23 @@
-# Google Natural Language — Text Moderation
+# Text Moderation API with Google Cloud Natural Language, Flask & Docker
+
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-blue?style=flat-square&logo=python)](https://www.python.org/downloads/)
+[![Flask 3.0](https://img.shields.io/badge/Flask-3.0-darkgreen?style=flat-square&logo=flask)](https://flask.palletsprojects.com/)
+[![Docker Compose](https://img.shields.io/badge/Docker-Compose-blue?style=flat-square&logo=docker)](https://www.docker.com/)
+[![Google Cloud Natural Language](https://img.shields.io/badge/Google%20Cloud-Natural%20Language%20API-red?style=flat-square&logo=google-cloud)](https://cloud.google.com/natural-language)
+[![NLP](https://img.shields.io/badge/NLP-Text%20Moderation-purple?style=flat-square)](https://en.wikipedia.org/wiki/Natural_language_processing)
+[![Content Safety](https://img.shields.io/badge/Content-Safety-orange?style=flat-square)](https://en.wikipedia.org/wiki/Content_moderation)
+[![Sentiment Analysis](https://img.shields.io/badge/Sentiment-Analysis-yellow?style=flat-square)](https://en.wikipedia.org/wiki/Sentiment_analysis)
+[![License MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+
+**Level:** Intermediate | **Time:** 15 min read | **Hands-on:** 30 min
 
 A small Flask API (Docker) that moderates a text through the Google Cloud
 Natural Language API. For each text it runs three evaluations, logs the
 combined result, and returns it.
 
 ## Flow
+
+![Text Moderation Flow](https://miro.medium.com/v2/resize:fit:700/1*kDXvNH_FvMyfC1FFmoiADg.png)
 
 `POST /moderate` with `{ "text": "..." }` runs, in order:
 
@@ -20,6 +33,73 @@ combined result, and returns it.
 
 The result is written to both the console (`docker compose logs`) and a rotating
 file at `./logs/analyze.log`.
+
+---
+
+## Examples — the full spectrum
+
+### Good — `positive-sentiment (0.9)` / `low` moderation
+
+![Good example](https://cdn-images-1.medium.com/max/800/1*MmX6fqTEmTYJbvxruJ88qg.png)
+
+Glowing hotel review: sentiment **0.9**, **zero** concerning categories → publish freely.
+
+```json
+{
+  "moderation_log": {
+    "sentiment_score": 0.9,
+    "sentiment_magnitude": 4.5,
+    "sentiment_status": "positive-sentiment",
+    "moderate_text_status": "low",
+    "moderate_text_score": 0,
+    "moderate_text_categories": []
+  }
+}
+```
+
+### Medium — `positive-sentiment (0.1)` / `low` moderation
+
+![Medium example](https://cdn-images-1.medium.com/max/800/1*VqTgwF9MsTEP6vC5Vd896A.png)
+
+Mixed phone review: sentiment **0.1** (borderline neutral), safe moderation → publish, but flag as balanced opinion.
+
+```json
+{
+  "moderation_log": {
+    "sentiment_score": 0.1,
+    "sentiment_magnitude": 2.3,
+    "sentiment_status": "positive-sentiment",
+    "moderate_text_status": "low",
+    "moderate_text_score": 0,
+    "moderate_text_categories": []
+  }
+}
+```
+
+### Bad — `negative-sentiment (-0.6)` / `high` moderation
+
+![Bad example](https://cdn-images-1.medium.com/max/800/1*Y8nYP-DVNI3ZtMrZRXCSkg.png)
+
+Angry airline complaint: sentiment **-0.6**, **11** concerning categories → flag for review or auto-reject.
+
+```json
+{
+  "moderation_log": {
+    "sentiment_score": -0.6,
+    "sentiment_magnitude": 3.4,
+    "sentiment_status": "negative-sentiment",
+    "moderate_text_status": "high",
+    "moderate_text_score": 11,
+    "moderate_text_categories": [
+      "toxic", "insult", "death, harm & tragedy", "violent",
+      "public safety", "health", "religion & belief", "war & conflict",
+      "politics", "finance", "legal"
+    ]
+  }
+}
+```
+
+---
 
 ## Setup
 
@@ -41,7 +121,7 @@ file at `./logs/analyze.log`.
 | GET    | `/health`   | —                   | Liveness probe                    |
 | POST   | `/moderate` | `{ "text": "..." }` | Run the moderation flow, log it   |
 
-## Example
+## Quick test
 
 ```bash
 curl -X POST http://localhost:5001/moderate \
@@ -65,7 +145,7 @@ curl -X POST http://localhost:5001/moderate \
 }
 ```
 
-Import `postman_collection.json` into Postman to try it without curl.
+Or import `postman_collection.json` into Postman and pick Good / Medium / Bad from the **Moderate** folder.
 
 ## Layout
 
@@ -74,6 +154,7 @@ Import `postman_collection.json` into Postman to try it without curl.
 ├── Dockerfile               # python:3.12-slim + gunicorn
 ├── docker-compose.yml       # port 5001, mounts keys/ and logs/
 ├── postman_collection.json
+├── tutorial.md              # full Medium-style walkthrough
 ├── app/
 │   ├── requirements.txt     # flask, gunicorn, google-cloud-language
 │   ├── main.py              # routes: /, /health, /moderate
@@ -82,3 +163,12 @@ Import `postman_collection.json` into Postman to try it without curl.
 ├── keys/                    # service-account.json (git-ignored)
 └── logs/                    # analyze.log (git-ignored)
 ```
+
+
+<div align="center">
+  <h3>⭐ Star This Repository ⭐</h3>
+  <p>Your support helps us improve and maintain this project!</p>
+  <a href="https://github.com/murilolivorato/text-moderation-api-python/stargazers">
+    <img src="https://img.shields.io/github/stars/murilolivorato/text-moderation-api-python?style=social" alt="GitHub Stars">
+  </a>
+</div>
