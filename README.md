@@ -14,9 +14,11 @@
   <img src="https://miro.medium.com/v2/resize:fit:700/1*kDXvNH_FvMyfC1FFmoiADg.png" alt="Text Moderation Flow" width="700">
 </div>
 
+---
+
 **Read the full article on Medium:**
 
-✍️ [https://medium.com/@murilolivorato/building-a-text-moderation-api-with-google-cloud-natural-language-flask-docker-4513bdd800b7?postPublishedType=repub](https://medium.com/@murilolivorato/building-a-text-moderation-api-with-google-cloud-natural-language-flask-docker-4513bdd800b7?postPublishedType=repub)
+✍️ [https://medium.com/@murilolivorato/building-a-text-moderation-api-with-google-cloud-natural-language-flask-docker-4513bdd800b7](https://medium.com/@murilolivorato/building-a-text-moderation-api-with-google-cloud-natural-language-flask-docker-4513bdd800b7)
 
 A small Flask API (Docker) that moderates a text through the Google Cloud
 Natural Language API. For each text it runs three evaluations, logs the
@@ -88,9 +90,7 @@ Mixed phone review: sentiment **0.1** (borderline neutral), safe moderation → 
 
 ### Bad — `negative-sentiment (-0.6)` / `high` moderation
 
-<div align="center">
-  <img src="https://cdn-images-1.medium.com/max/800/1*Y8nYP-DVNI3ZtMrZRXCSkg.png" alt="Bad example" width="700">
-</div>
+![Bad example](https://cdn-images-1.medium.com/max/800/1*Y8nYP-DVNI3ZtMrZRXCSkg.png)
 
 Angry airline complaint: sentiment **-0.6**, **11** concerning categories → flag for review or auto-reject.
 
