@@ -9,7 +9,9 @@
 [![Sentiment Analysis](https://img.shields.io/badge/Sentiment-Analysis-yellow?style=flat-square)](https://en.wikipedia.org/wiki/Sentiment_analysis)
 [![License MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-**Level:** Intermediate | **Time:** 15 min read | **Hands-on:** 30 min
+**Read the full article on Medium:**
+
+✍️ [https://medium.com/@murilolivorato/building-a-text-moderation-api-with-google-cloud-natural-language-flask-docker-4513bdd800b7?postPublishedType=repub](https://medium.com/@murilolivorato/building-a-text-moderation-api-with-google-cloud-natural-language-flask-docker-4513bdd800b7?postPublishedType=repub)
 
 A small Flask API (Docker) that moderates a text through the Google Cloud
 Natural Language API. For each text it runs three evaluations, logs the
